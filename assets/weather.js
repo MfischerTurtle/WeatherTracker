@@ -113,7 +113,7 @@ function getFiveDayForecast(searchValue) {
         var fiveDayDate = $("#fiveday-date" + i);
         var weatherIcon = $("#weather-icon" + i);
         weatherIcon.append ("<img>").attr("src", "https://openweathermap.org/img/w/" + response.list[i * 8].weather[0].icon + ".png");
-        fiveDayDate.text(response.list[i * 8].dt_txt);
+        fiveDayDate.text(moment().add(i, 'days').format("L"));
         fiveDayTemp.text(response.list[i * 8].main.temp);
         fiveDayTemp.append("&deg;F");
         fiveDayHumi.text(response.list[i * 8].main.humidity + "%");
@@ -183,6 +183,7 @@ function initalizeHistory() {
    
     if (cityList.length !== 0) {
       currentConditionsRequest(cityList[lastIndex]);
+     
       weatherContent.removeClass("hide");
     }
   }
