@@ -56,12 +56,7 @@ function currentConditionsRequest(searchValue) {
       currentCity.text(response.name);
       currentCity.append("<small class='text-muted' id='current-date'>");
       $("#current-date").text("(" + currentDate + ")");
-      currentCity.append(
-        "<img src='https://openweathermap.org/img/w/" +
-          response.weather[0].icon +
-          ".png' alt='" +
-          response.weather[0].main +
-          "' />"
+      currentCity.append("<img src='https://openweathermap.org/img/w/" + response.weather[0].icon + ".png' alt='" + response.weather[0].main + "' />"
       );
       currentTemp.text(response.main.temp);
       currentTemp.append("&deg;F");
@@ -80,7 +75,7 @@ function getFiveDayForecast(searchValue) {
     searchValue +
     "&units=imperial&appid=" +
     APIkey;
-
+    var imgURL =
   fetch(forcastURL, {
     method: "GET",
   })
@@ -93,11 +88,14 @@ function getFiveDayForecast(searchValue) {
         var fiveDayHumi = $("#fiveday-Humi" + i);
         var fiveDayWind = $("#fiveday-Wind" + i);
         var fiveDayDate = $("#fiveday-date" + i);
+        var weatherIcon = $("#weather-icon" + i);
+        weatherIcon.append ("<img>").attr("src", "https://openweathermap.org/img/w/" + response.list[i * 8].weather[0].icon + ".png");
         fiveDayDate.text(response.list[i * 8].dt_txt);
         fiveDayTemp.text(response.list[i * 8].main.temp);
         fiveDayTemp.append("&deg;F");
         fiveDayHumi.text(response.list[i * 8].main.humidity + "%");
-        fiveDayWind.text(response.list[i * 8].wind.speed + "MPH");
+        fiveDayWind.text(response.list[i * 8].wind.speed + "MPH"); 
+        
       }
       console.log(response);
       currentCity.text(response.name);
@@ -107,14 +105,11 @@ function getFiveDayForecast(searchValue) {
     });
 }
 
+// Save sreach history
 function searchHistory(searchValue) {
-  // Grab value entered into search bar
-  // var searchValue = searchCityInput.val().trim();
-
-  // If there are characters entered into the search bar
+  
   if (searchValue) {
-    // Place value in the array of cities
-    // if it is a new entry
+    
     if (cityList.indexOf(searchValue) === -1) {
       cityList.push(searchValue);
 
@@ -123,52 +118,45 @@ function searchHistory(searchValue) {
       clearHistoryButton.removeClass("hide");
       weatherContent.removeClass("hide");
     } else {
-      // Remove the existing value from
-      // the array
+      
       var removeIndex = cityList.indexOf(searchValue);
       cityList.splice(removeIndex, 1);
 
-      // Push the value again to the array
+      
       cityList.push(searchValue);
 
-      // list all of the cities in user history
-      // so the old entry appears at the top
-      // of the search history
+      
       listArray();
       clearHistoryButton.removeClass("hide");
       weatherContent.removeClass("hide");
     }
   }
-  // console.log(cityList);
+
 }
 
 // List the array into the search history sidebar
 function listArray() {
-  // Empty out the elements in the sidebar
+  
   searchHistoryList.empty();
-  // Repopulate the sidebar with each city
-  // in the array
+  
   cityList.forEach(function (city) {
     var searchHistoryItem = $('<li class="list-group-item city-btn">');
     searchHistoryItem.attr("data-value", city);
     searchHistoryItem.text(city);
     searchHistoryList.prepend(searchHistoryItem);
   });
-  // Update city list history in local storage
+ 
   localStorage.setItem("cities", JSON.stringify(cityList));
 }
 
-// Grab city list string from local storage
-// and update the city list array
-// for the search history sidebar
+
 function initalizeHistory() {
   if (localStorage.getItem("cities")) {
     cityList = JSON.parse(localStorage.getItem("cities"));
     var lastIndex = cityList.length - 1;
-    // console.log(cityList);
+  
     listArray();
-    // Display the last city viewed
-    // if page is refreshed
+   ed
     if (cityList.length !== 0) {
       currentConditionsRequest(cityList[lastIndex]);
       weatherContent.removeClass("hide");
