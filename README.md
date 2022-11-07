@@ -2,14 +2,14 @@
 
 This project is a weather dashboard using the OpenWeather API.
 
-[JavaScriptQuiz]( https://mfischerturtle.github.io/WeatherTracker/)
+[Weather Tracker]( https://mfischerturtle.github.io/WeatherTracker/)
 
 
 ## Overview
 
 This project is a weather dashboard application with search functionality to find current weather conditions and the future weather outlook for multiple cities. 
 
-![weather dashboard](./assets/imgs/projectpic.png.png)
+![Weather Tracker](./assets/imgs/projectpic.png.png)
 
 
 ## User Story
