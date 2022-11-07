@@ -18,6 +18,19 @@ var cityList = [];
 var currentDate = moment().format("L");
 $("#current-date").text("(" + currentDate + ")");
 
+// Hitting enter while input is focused will trigger
+
+$(document).on("submit", function(event){
+  event.preventDefault();
+
+ 
+  var searchValue = searchCityInput.val().trim();
+
+  currentConditionsRequest(searchValue)
+  searchHistory(searchValue);
+  searchCityInput.val(""); 
+});
+
 searchCityButton.on("click", function (event) {
   event.preventDefault();
 
@@ -33,14 +46,24 @@ searchCityButton.on("click", function (event) {
 
   searchCityInput.val("");
 });
+// Allows user to look at past searches by clicking on name
+searchHistoryList.on("click","li.city-btn", function(event) {
+ 
+  var value = $(this).data("value");
+  currentConditionsRequest(value);
+  searchHistory(value); 
 
+});
+//clears history of sreaches
 clearHistoryButton.on("click", function(){
   // Empty out the list of citys
   cityList = [];
-  // Update list of history in local storage
+
   listArray();
 });
 
+
+// Gets todays forcst
 function currentConditionsRequest(searchValue) {
   var queryURL =
     "https://api.openweathermap.org/data/2.5/weather?q=" + searchValue + "&units=imperial&appid=" + APIkey;
@@ -68,7 +91,7 @@ function currentConditionsRequest(searchValue) {
       var lon = response.coord.lon;
     });
 }
-
+// Gets 5 day forcast
 function getFiveDayForecast(searchValue) {
   var forcastURL =
     "https://api.openweathermap.org/data/2.5/forecast?q=" +
@@ -149,6 +172,7 @@ function listArray() {
   localStorage.setItem("cities", JSON.stringify(cityList));
 }
 
+// Grab city list string from local storage and update the city list array
 
 function initalizeHistory() {
   if (localStorage.getItem("cities")) {
@@ -156,7 +180,7 @@ function initalizeHistory() {
     var lastIndex = cityList.length - 1;
   
     listArray();
-   ed
+   
     if (cityList.length !== 0) {
       currentConditionsRequest(cityList[lastIndex]);
       weatherContent.removeClass("hide");
